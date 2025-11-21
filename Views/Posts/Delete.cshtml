@@ -1,0 +1,19 @@
+﻿@model MyBlog.Data.Entities.Post
+@{
+    ViewData["Title"] = "Delete";
+}
+@{
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Подтверждение удаления поста</h1>
+    <div class="alert alert-warning" role="alert">
+        Вы действительно хотите удалить пост "@Model.Title"?
+    </div>
+    <form asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger mr-2">Да, удалить</button>
+        <a asp-action="Index" class="btn btn-secondary">Нет, вернуться назад</a>
+    </form>
+</div>
