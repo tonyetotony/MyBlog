@@ -19,7 +19,7 @@ namespace MyBlog.Controllers
             _context = context;
         }
 
-        // GET: Posts
+        [HttpGet]
         public IActionResult Index() 
         { 
             var posts = _context.Posts.OrderByDescending(p => p.CreatedAt).ToList();
@@ -32,7 +32,7 @@ namespace MyBlog.Controllers
             return View(); 
         }
 
-        // POST: Posts/Create
+        
         [HttpPost] 
         public IActionResult Create(Post post) 
         { 
@@ -46,8 +46,37 @@ namespace MyBlog.Controllers
             return View(post); 
         }
 
-        // GET: Posts/Delete/5
-        // Удаление поста
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var post = _context.Posts.Find(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+            return View(post);
+        }
+
+        
+        [HttpPost]
+        public IActionResult Edit(int id, Post updatedPost)
+        {
+            var post = _context.Posts.Find(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                post.Title = updatedPost.Title;
+                post.Content = updatedPost.Content;
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(updatedPost);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
@@ -61,7 +90,7 @@ namespace MyBlog.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // Переадресация на страницу подтверждения удаления
+        [HttpGet]
         public IActionResult Delete(int id)
         {
             var post = _context.Posts.Find(id);
