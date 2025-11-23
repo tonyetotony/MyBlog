@@ -14,7 +14,7 @@ namespace MyBlog
 
             var app = builder.Build();
             app.UseStaticFiles();
-            app.UseRouting();
+            
             app.MapControllerRoute("default", "{controller=Posts}/{action=Index}");
             
             
